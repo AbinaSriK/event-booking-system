@@ -1,0 +1,155 @@
+name: CI/CD
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+
+  # =========================
+  # BACKEND
+  # =========================
+  backend:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Make Maven wrapper executable
+        working-directory: event-backend
+        run: chmod +x mvnw
+
+      - name: Run backend tests
+        working-directory: event-backend
+        run: ./mvnw clean verify
+
+
+  # =========================
+  # FRONTEND
+  # =========================
+  frontend:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: event-frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: event-frontend
+        run: npm ci
+
+      - name: Run lint
+        working-directory: event-frontend
+        run: npm run lint
+
+      - name: Run frontend tests
+        working-directory: event-frontend
+        run: npm test -- --ci
+
+      - name: Build frontend
+        working-directory: event-frontend
+        run: npm run build
+
+
+  # =========================
+  # DOCKER BUILD
+  # =========================
+  docker:
+    name: Build Docker Images
+    needs:
+      - backend
+      - frontend
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build backend Docker image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./event-backend
+          push: false
+          tags: event-booking-backend:ci
+
+      - name: Build frontend Docker image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./event-frontend
+          push: false
+          tags: event-booking-frontend:ci
+          build-args: |
+            NEXT_PUBLIC_API_URL=http://localhost:8080
+
+
+  # =========================
+  # PUBLISH TO GHCR
+  # =========================
+  publish:
+    name: Publish Docker Images
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    needs:
+      - backend
+      - frontend
+      - docker
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./event-backend
+          push: true
+          tags: ghcr.io/abinasrik/event-booking-backend:latest
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./event-frontend
+          push: true
+          tags: ghcr.io/abinasrik/event-booking-frontend:latest
+          build-args: |
+            NEXT_PUBLIC_API_URL=http://localhost:8080

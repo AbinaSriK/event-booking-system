@@ -159,7 +159,7 @@ export default function BookingsPage() {
               </h3>
 
               <p className="mt-2 text-[#65757B]">
-                You haven't booked any events yet. Browse the available
+                You haven&apos;t booked any events yet. Browse the available
                 events and book your seats when you find something you like.
               </p>
             </div>

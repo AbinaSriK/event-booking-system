@@ -160,7 +160,7 @@ export default function EventsPage() {
           </h1>
 
           <p className="mt-2 text-[#68736C] text-lg">
-            Explore upcoming events and find something you'd like to attend.
+            Explore upcoming events and find something you&apos;d like to attend.
           </p>
 
         </div>
