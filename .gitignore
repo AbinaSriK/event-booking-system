@@ -1,0 +1,22 @@
+# Environment files
+.env
+.env.*
+
+# Java / Maven
+event-backend/target/
+
+# Node / Next.js
+event-frontend/node_modules/
+event-frontend/.next/
+event-frontend/out/
+
+# ZIP archives
+*.zip
+
+# IDE files
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
