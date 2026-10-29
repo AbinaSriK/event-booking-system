@@ -3,6 +3,7 @@ package com.example.eventbooking.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import jakarta.persistence.Column;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class Event {
 
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private String location;
