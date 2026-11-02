@@ -43,8 +43,8 @@ export default function Navbar() {
         { href: "/dashboard", label: "Dashboard" },
         ...(role === "ADMIN"
           ? [
-              { href: "/admin/events", label: "Events" },
-              { href: "/admin/users", label: "Users" },
+              { href: "/admin/events", label: "Manage Events" },
+              { href: "/admin/users", label: "Manage Users" },
             ]
           : [
               { href: "/events", label: "Events" },
@@ -85,7 +85,7 @@ export default function Navbar() {
                 onClick={handleLogout}
                 className="whitespace-nowrap px-3 py-3 text-sm font-semibold text-[#526158] transition hover:text-[#A94A2E]"
               >
-                Log out
+                Logout
               </button>
             ) : (
               <Link
@@ -95,7 +95,7 @@ export default function Navbar() {
                 }`}
                 aria-current={pathname === "/register" ? "page" : undefined}
               >
-                Get started <span aria-hidden="true">→</span>
+                Register
               </Link>
             )}
           </div>
