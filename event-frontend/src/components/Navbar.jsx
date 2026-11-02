@@ -8,7 +8,8 @@ export default function Navbar() {
   const [role, setRole] = useState(null);
   const pathname = usePathname();
 
-  const isActive = (href) => pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
+  const isActive = (href) =>
+    Boolean(pathname && (pathname === href || (href !== "/" && pathname.startsWith(`${href}/`))));
 
   const navClass = (href) =>
     `whitespace-nowrap border-b-2 px-3 py-3 text-sm font-semibold transition ${
