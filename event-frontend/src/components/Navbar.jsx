@@ -1,30 +1,31 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const [role, setRole] = useState(null);
+  const pathname = usePathname();
+
+  const isActive = (href) => pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
+
+  const navClass = (href) =>
+    `whitespace-nowrap border-b-2 px-3 py-3 text-sm font-semibold transition ${
+      isActive(href)
+        ? "border-[#C65D3B] text-[#A94A2E]"
+        : "border-transparent text-[#526158] hover:border-[#D9C7B4] hover:text-[#26332D]"
+    }`;
 
   useEffect(() => {
     const updateNavbar = () => {
       const token = localStorage.getItem("token");
-      const userRole = localStorage.getItem("role");
-
-      if (token) {
-        setRole(userRole);
-      } else {
-        setRole(null);
-      }
+      setRole(token ? localStorage.getItem("role") : null);
     };
 
     updateNavbar();
-
     window.addEventListener("auth-change", updateNavbar);
-
-    return () => {
-      window.removeEventListener("auth-change", updateNavbar);
-    };
+    return () => window.removeEventListener("auth-change", updateNavbar);
   }, []);
 
   const handleLogout = () => {
@@ -32,113 +33,73 @@ export default function Navbar() {
     localStorage.removeItem("userId");
     localStorage.removeItem("email");
     localStorage.removeItem("role");
-
     setRole(null);
-
     window.location.href = "/";
   };
 
+  const links = role
+    ? [
+        { href: "/", label: "Home" },
+        { href: "/dashboard", label: "Dashboard" },
+        ...(role === "ADMIN"
+          ? [
+              { href: "/admin/events", label: "Events" },
+              { href: "/admin/users", label: "Users" },
+            ]
+          : [
+              { href: "/events", label: "Events" },
+              { href: "/bookings", label: "My Bookings" },
+            ]),
+      ]
+    : [
+        { href: "/", label: "Home" },
+        { href: "/login", label: "Login" },
+      ];
+
   return (
-    <nav className="bg-[#2F3E36] text-white border-b border-[#46564D]">
-
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-
-        {/* Logo */}
-        <Link
-          href="/"
-          className="flex items-center gap-3"
-        >
-          <span className="flex items-center justify-center w-10 h-10 bg-[#F4EFE7] text-[#2F3E36] rounded-lg text-xl font-bold">
-            E
-          </span>
-
-          <span className="text-2xl font-bold tracking-tight">
-            Evently
-          </span>
-        </Link>
-
-        {/* Navigation */}
-        <div className="flex items-center gap-1">
-
-          <Link
-            href="/"
-            className="px-4 py-2 rounded-lg text-[#F4EFE7] hover:bg-white/10 transition"
-          >
-            Home
+    <nav className="border-b border-[#DDD5C8] bg-[#F4EFE7] text-[#26332D]">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-5 py-3 md:px-6">
+          <Link href="/" className="group flex shrink-0 items-center gap-3" aria-label="Evently home">
+            <span className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-[#2F3E36] text-lg font-bold text-[#FFFDF9] transition group-hover:-rotate-3">
+              E
+            </span>
+            <span className="text-[21px] font-bold tracking-tight text-[#26332D]">Evently</span>
           </Link>
 
-          {role ? (
-            <>
-              <Link
-                href="/dashboard"
-                className="px-4 py-2 rounded-lg text-[#F4EFE7] hover:bg-white/10 transition"
-              >
-                Dashboard
-              </Link>
+          <div className="ml-auto flex max-w-full flex-wrap items-center gap-x-3">
+            <div className="flex max-w-full items-center gap-1 overflow-x-auto">
+              {links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={navClass(link.href)}
+                  aria-current={isActive(link.href) ? "page" : undefined}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
 
-              {role === "ADMIN" ? (
-                <>
-                  <Link
-                    href="/admin/events"
-                    className="px-4 py-2 rounded-lg text-[#F4EFE7] hover:bg-white/10 transition"
-                  >
-                    Manage Events
-                  </Link>
-
-                  <Link
-                    href="/admin/users"
-                    className="px-4 py-2 rounded-lg text-[#F4EFE7] hover:bg-white/10 transition"
-                  >
-                    Manage Users
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link
-                    href="/events"
-                    className="px-4 py-2 rounded-lg text-[#F4EFE7] hover:bg-white/10 transition"
-                  >
-                    Events
-                  </Link>
-
-                  <Link
-                    href="/bookings"
-                    className="px-4 py-2 rounded-lg text-[#F4EFE7] hover:bg-white/10 transition"
-                  >
-                    My Bookings
-                  </Link>
-                </>
-              )}
-
+            {role ? (
               <button
                 onClick={handleLogout}
-                className="ml-3 px-5 py-2 rounded-lg border border-[#D8D0C4] text-[#F4EFE7] hover:bg-[#F4EFE7] hover:text-[#2F3E36] transition"
+                className="whitespace-nowrap px-3 py-3 text-sm font-semibold text-[#526158] transition hover:text-[#A94A2E]"
               >
-                Logout
+                Log out
               </button>
-            </>
-          ) : (
-            <>
-              <Link
-                href="/login"
-                className="px-4 py-2 rounded-lg text-[#F4EFE7] hover:bg-white/10 transition"
-              >
-                Login
-              </Link>
-
+            ) : (
               <Link
                 href="/register"
-                className="ml-2 px-5 py-2 rounded-lg bg-[#C65D3B] text-white font-semibold hover:bg-[#A94A2E] transition"
+                className={`whitespace-nowrap rounded-md px-5 py-2 text-sm font-bold text-white transition hover:bg-[#A94A2E] ${
+                  pathname === "/register" ? "bg-[#A94A2E]" : "bg-[#C65D3B]"
+                }`}
+                aria-current={pathname === "/register" ? "page" : undefined}
               >
-                Register
+                Get started <span aria-hidden="true">→</span>
               </Link>
-            </>
-          )}
-
-        </div>
-
+            )}
+          </div>
       </div>
-
     </nav>
   );
 }

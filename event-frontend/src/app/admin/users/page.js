@@ -83,9 +83,9 @@ export default function AdminUsersPage() {
 
   if (!authorized) {
     return (
-      <main className="min-h-screen bg-[#EEF1F2] px-6 py-12">
-        <div className="max-w-6xl mx-auto">
-          <p className="text-[#64747A]">
+      <main className="min-h-screen bg-[#F4EFE7] px-6 py-12">
+        <div className="mx-auto max-w-6xl">
+          <p className="text-[#68736C]">
             Loading...
           </p>
         </div>
@@ -95,9 +95,9 @@ export default function AdminUsersPage() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-[#EEF1F2] px-6 py-12">
-        <div className="max-w-6xl mx-auto">
-          <p className="text-[#64747A]">
+      <main className="min-h-screen bg-[#F4EFE7] px-6 py-12">
+        <div className="mx-auto max-w-6xl">
+          <p className="text-[#68736C]">
             Loading users...
           </p>
         </div>
@@ -107,17 +107,14 @@ export default function AdminUsersPage() {
 
   if (isError) {
     return (
-      <main className="min-h-screen bg-[#EEF1F2] px-6 py-12">
-        <div className="max-w-6xl mx-auto">
-
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#B85C45]">
+      <main className="min-h-screen bg-[#F4EFE7] px-6 py-12">
+        <div className="mx-auto max-w-6xl">
+          <p className="text-xs font-bold uppercase tracking-[.16em] text-[#A94A2E]">
             Admin Panel
           </p>
-
-          <h1 className="mt-2 text-4xl font-bold text-[#263A40]">
+          <h1 className="mt-2 text-4xl font-bold text-[#26332D]">
             Manage Users
           </h1>
-
           <p className="mt-4 text-[#B94A48]">
             Failed to load users. Please try again.
           </p>
@@ -132,130 +129,76 @@ export default function AdminUsersPage() {
     : data?.content || [];
 
   return (
-    <main className="min-h-screen bg-[#EEF1F2] px-6 py-10">
-
-      <div className="max-w-6xl mx-auto">
-
-        {/* Page Header */}
-        <div className="mb-8">
-
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#B85C45]">
+    <main className="min-h-screen bg-[#F4EFE7] px-6 py-10 md:py-12">
+      <div className="mx-auto max-w-6xl">
+        <header className="mb-10 border-l-4 border-[#C65D3B] py-2 pl-6 md:pl-8">
+          <p className="text-xs font-bold uppercase tracking-[.16em] text-[#A94A2E]">
             Admin Panel
           </p>
-
-          <h1 className="mt-2 text-4xl font-bold text-[#263A40]">
+          <h1 className="mt-2 text-4xl font-bold tracking-tight text-[#26332D] md:text-5xl">
             Manage Users
           </h1>
-
-          <p className="mt-2 text-[#64747A]">
+          <p className="mt-2 text-[#68736C]">
             View registered users and manage their access roles.
           </p>
+        </header>
 
-        </div>
-
-        {/* User List */}
+        <section aria-label="Registered users">
+          <div className="mb-3 flex items-center justify-between border-b border-[#DDD5C8] pb-3 text-xs font-bold uppercase tracking-[.12em] text-[#68736C]">
+            <span>Registered people</span>
+            <span>{users.length} {users.length === 1 ? "user" : "users"}</span>
+          </div>
         {users.length === 0 ? (
-          <div className="bg-white border border-[#D7DEE1] rounded-xl p-10 text-center shadow-sm">
-
-            <h2 className="text-xl font-semibold text-[#263A40]">
+          <div className="border-b border-[#DDD5C8] py-10 text-center">
+            <h2 className="text-xl font-semibold text-[#26332D]">
               No users found
             </h2>
-
-            <p className="mt-2 text-[#64747A]">
+            <p className="mt-2 text-[#68736C]">
               There are currently no registered users.
             </p>
-
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
+          <div>
             {users.map((user) => (
               <div
                 key={user.id}
-                className="bg-white border border-[#D7DEE1] rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+                className="grid gap-4 border-b border-[#DDD5C8] py-5 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)_minmax(5rem,.55fr)_auto] sm:items-center sm:gap-6"
               >
-
-                {/* User Header */}
-                <div className="flex justify-between items-start gap-4">
-
-                  <div>
-                    <p className="text-sm font-medium text-[#B85C45]">
-                      User #{user.id}
-                    </p>
-
-                    <h2 className="mt-1 text-2xl font-bold text-[#263A40]">
-                      {user.name}
-                    </h2>
-                  </div>
-
-                  <span
-                    className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                      user.role === "ADMIN"
-                        ? "bg-[#E8DCC8] text-[#765B27]"
-                        : "bg-[#E2E9EA] text-[#4F686F]"
-                    }`}
-                  >
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-[#A94A2E]">User #{user.id}</p>
+                  <h2 className="mt-1 truncate text-lg font-bold text-[#26332D]">{user.name}</h2>
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-[#68736C]">Email</p>
+                  <p className="mt-1 break-all text-sm text-[#405049]">{user.email}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-[#68736C] sm:hidden">Role</p>
+                  <span className={`mt-1 inline-flex items-center gap-2 text-sm font-bold ${user.role === "ADMIN" ? "text-[#A94A2E]" : "text-[#4F7058]"}`}>
+                    <span className={`h-2 w-2 rounded-full ${user.role === "ADMIN" ? "bg-[#C65D3B]" : "bg-[#4F7058]"}`} />
                     {user.role}
                   </span>
-
                 </div>
-
-                {/* User Information */}
-                <div className="mt-6 space-y-4">
-
-                  <div>
-                    <p className="text-sm text-[#64747A]">
-                      Email
-                    </p>
-
-                    <p className="mt-1 font-medium text-[#263A40] break-all">
-                      {user.email}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-sm text-[#64747A]">
-                      Current Role
-                    </p>
-
-                    <p className="mt-1 font-medium text-[#263A40]">
-                      {user.role}
-                    </p>
-                  </div>
-
-                </div>
-
-                {/* Actions */}
-                <div className="mt-6 pt-5 border-t border-[#E2E7E9] flex gap-3">
-
+                <div className="flex items-center gap-4 sm:justify-end">
                   <button
-                    onClick={() =>
-                      handleRoleChange(user.id, user.role)
-                    }
-                    className="flex-1 bg-[#B85C45] text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-[#9F4D39] transition"
+                    onClick={() => handleRoleChange(user.id, user.role)}
+                    className="whitespace-nowrap border-b border-[#C65D3B] pb-1 text-sm font-semibold text-[#A94A2E] transition hover:text-[#7F3824]"
                   >
-                    {user.role === "ADMIN"
-                      ? "Make User"
-                      : "Make Admin"}
+                    Make {user.role === "ADMIN" ? "User" : "Admin"}
                   </button>
-
                   <button
                     onClick={() => handleDelete(user.id)}
-                    className="flex-1 bg-[#263A40] text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-[#1B2B30] transition"
+                    className="whitespace-nowrap border-b border-transparent pb-1 text-sm font-semibold text-[#68736C] transition hover:border-[#B94A48] hover:text-[#B94A48]"
                   >
                     Delete
                   </button>
-
                 </div>
-
               </div>
             ))}
-
           </div>
         )}
-
+        </section>
       </div>
-
     </main>
   );
 }

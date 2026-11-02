@@ -73,9 +73,9 @@ export default function BookingsPage() {
 
   if (!userId) {
     return (
-      <main className="min-h-screen bg-[#E8EDF0] px-6 py-12">
+      <main className="min-h-screen bg-[#F4EFE7] px-6 py-12">
         <div className="max-w-6xl mx-auto">
-          <p className="text-[#65757B]">Loading...</p>
+          <p className="text-[#68736C]">Loading...</p>
         </div>
       </main>
     );
@@ -83,9 +83,9 @@ export default function BookingsPage() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-[#E8EDF0] px-6 py-12">
+      <main className="min-h-screen bg-[#F4EFE7] px-6 py-12">
         <div className="max-w-6xl mx-auto">
-          <p className="text-[#65757B]">Loading your bookings...</p>
+          <p className="text-[#68736C]">Loading your bookings...</p>
         </div>
       </main>
     );
@@ -93,11 +93,9 @@ export default function BookingsPage() {
 
   if (isError) {
     return (
-      <main className="min-h-screen bg-[#E8EDF0] px-6 py-12">
-        <div className="max-w-6xl mx-auto">
-          <p className="text-red-600">
-            Failed to load your bookings.
-          </p>
+      <main className="min-h-screen bg-[#F4EFE7] px-6 py-12">
+        <div className="max-w-6xl mx-auto rounded-2xl border border-[#E8C5C3] bg-white p-6 text-[#B94A48] shadow-sm">
+          Failed to load your bookings. Please refresh the page and try again.
         </div>
       </main>
     );
@@ -106,22 +104,22 @@ export default function BookingsPage() {
   const bookings = data?.content || [];
 
   return (
-    <main className="min-h-screen bg-[#E8EDF0] px-6 py-12">
+    <main className="min-h-screen bg-[#F4EFE7] px-6 py-10 md:py-12">
 
       <div className="max-w-6xl mx-auto">
 
         {/* Page Header */}
         <div className="mb-8">
 
-          <p className="text-sm font-medium text-[#557985] uppercase tracking-wide">
-            Booking History
+          <p className="inline-flex rounded-full bg-[#F3E2DA] px-3 py-1 text-xs font-bold uppercase tracking-[.14em] text-[#A94A2E]">
+            Your plans, all together
           </p>
 
-          <h1 className="mt-2 text-4xl font-bold text-[#263A40]">
+          <h1 className="mt-3 text-4xl font-bold tracking-tight text-[#26332D] md:text-5xl">
             My Bookings
           </h1>
 
-          <p className="mt-3 text-lg text-[#65757B] max-w-2xl">
+          <p className="mt-3 max-w-2xl text-lg text-[#68736C]">
             View your booked events, check your booking details, and
             cancel a booking if your plans change.
           </p>
@@ -130,13 +128,13 @@ export default function BookingsPage() {
 
         {/* Messages */}
         {message && (
-          <div className="mb-6 bg-white border border-[#BFD6CC] text-[#4F7565] px-5 py-3 rounded-lg">
+          <div className="mb-6 rounded-xl border border-[#C9DCCB] bg-[#E2ECE4] px-5 py-3 text-[#4F7058]">
             {message}
           </div>
         )}
 
         {error && (
-          <div className="mb-6 bg-white border border-[#E3BDBD] text-red-600 px-5 py-3 rounded-lg">
+          <div className="mb-6 rounded-xl border border-[#E8C5C3] bg-white px-5 py-3 text-[#B94A48]">
             {error}
           </div>
         )}
@@ -144,21 +142,22 @@ export default function BookingsPage() {
         {/* Bookings Section */}
         <div>
 
-          <h2 className="text-2xl font-semibold text-[#263A40]">
-            Your Bookings
+          <h2 className="text-2xl font-bold text-[#26332D]">
+            Your reservations
           </h2>
 
-          <p className="mt-1 mb-5 text-[#65757B]">
-            Here are the events you have booked.
+          <p className="mt-1 mb-5 text-[#68736C]">
+            The event details and booking status you may need, in one place.
           </p>
 
           {bookings.length === 0 ? (
-            <div className="bg-white border border-[#D2DCE0] rounded-xl p-8 shadow-sm">
-              <h3 className="text-xl font-semibold text-[#263A40]">
+            <div className="rounded-2xl border border-[#DDD5C8] bg-white p-8 shadow-sm">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#F3E2DA] text-xl text-[#C65D3B]">✦</div>
+              <h3 className="mt-5 text-xl font-semibold text-[#26332D]">
                 No bookings yet
               </h3>
 
-              <p className="mt-2 text-[#65757B]">
+              <p className="mt-2 max-w-xl leading-relaxed text-[#68736C]">
                 You haven&apos;t booked any events yet. Browse the available
                 events and book your seats when you find something you like.
               </p>
@@ -173,22 +172,19 @@ export default function BookingsPage() {
                 return (
                   <div
                     key={booking.id}
-                    className={`bg-white border rounded-xl p-6 shadow-sm ${
-                      isCancelled
-                        ? "border-[#D2DCE0]"
-                        : "border-[#C4D3D8]"
-                    }`}
+                    className="rounded-xl border border-[#DDD5C8] bg-white p-6 shadow-sm"
+                    style={{ boxShadow: "0 2px 8px rgba(38, 51, 45, 0.05)" }}
                   >
 
                     {/* Booking Header */}
                     <div className="flex justify-between items-start gap-4">
 
                       <div>
-                        <p className="text-sm text-[#65757B]">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-[#8A938C]">
                           Booking
                         </p>
 
-                        <h3 className="mt-1 text-xl font-semibold text-[#263A40]">
+                        <h3 className="mt-1 text-xl font-bold text-[#26332D]">
                           #{booking.id}
                         </h3>
                       </div>
@@ -196,8 +192,8 @@ export default function BookingsPage() {
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${
                           isCancelled
-                            ? "bg-[#EEF0F1] text-[#65757B]"
-                            : "bg-[#DCE8EB] text-[#42636F]"
+                            ? "bg-[#EEEAE2] text-[#68736C]"
+                            : "bg-[#E2ECE4] text-[#4F7058]"
                         }`}
                       >
                         {booking.status}
@@ -209,31 +205,31 @@ export default function BookingsPage() {
                     <div className="mt-6 space-y-3">
 
                       <div className="flex justify-between">
-                        <span className="text-[#65757B]">
+                        <span className="text-[#68736C]">
                           Event ID
                         </span>
 
-                        <span className="font-medium text-[#263A40]">
+                        <span className="font-semibold text-[#26332D]">
                           {booking.eventId}
                         </span>
                       </div>
 
                       <div className="flex justify-between">
-                        <span className="text-[#65757B]">
+                        <span className="text-[#68736C]">
                           Seats
                         </span>
 
-                        <span className="font-medium text-[#263A40]">
+                        <span className="font-semibold text-[#26332D]">
                           {booking.numberOfSeats}
                         </span>
                       </div>
 
                       <div className="flex justify-between">
-                        <span className="text-[#65757B]">
+                        <span className="text-[#68736C]">
                           Total Amount
                         </span>
 
-                        <span className="font-medium text-[#263A40]">
+                        <span className="font-semibold text-[#26332D]">
                           ₹{booking.totalAmount}
                         </span>
                       </div>
@@ -245,7 +241,7 @@ export default function BookingsPage() {
                       <button
                         onClick={() => handleCancel(booking.id)}
                         disabled={cancellingId === booking.id}
-                        className="mt-6 bg-[#557985] text-white px-5 py-2.5 rounded-md hover:bg-[#42636F] transition disabled:opacity-50"
+                        className="mt-6 rounded-lg bg-[#C65D3B] px-5 py-2.5 font-semibold text-white transition hover:bg-[#A94A2E] disabled:opacity-50"
                       >
                         {cancellingId === booking.id
                           ? "Cancelling..."
@@ -254,7 +250,7 @@ export default function BookingsPage() {
                     )}
 
                     {isCancelled && (
-                      <p className="mt-5 text-sm text-[#65757B]">
+                      <p className="mt-5 border-t border-[#EEE7DD] pt-4 text-sm text-[#68736C]">
                         This booking has been cancelled.
                       </p>
                     )}

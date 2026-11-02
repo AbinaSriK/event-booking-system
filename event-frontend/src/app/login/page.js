@@ -69,8 +69,9 @@ export default function LoginPage() {
           {/* Header */}
           <div className="text-center">
 
-            <div className="mx-auto flex items-center justify-center w-12 h-12 bg-[#5B7F87] text-white rounded-xl text-xl font-bold">
+            <div className="relative mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[#2F3E36] text-xl font-bold text-[#FFFDF9] shadow-sm">
               E
+              <span className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-[3px] border-white bg-[#C65D3B]" />
             </div>
 
             <h1 className="mt-5 text-3xl font-bold text-[#26332D]">

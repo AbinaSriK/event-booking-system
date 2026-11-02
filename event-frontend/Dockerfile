@@ -13,6 +13,7 @@ ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
 RUN npm run build
+RUN npm prune --omit=dev
 
 
 # ---------- Run stage ----------
@@ -23,10 +24,9 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 COPY --from=build /app/package*.json ./
+COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
-
-RUN npm ci --omit=dev
 
 EXPOSE 3000
 

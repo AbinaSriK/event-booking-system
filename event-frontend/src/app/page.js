@@ -3,228 +3,69 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+const steps = [
+  { number: "01", title: "Find your next thing", text: "Browse talks, workshops, and experiences picked for curious people." },
+  { number: "02", title: "Save your seat", text: "Choose an event and keep your booking details together." },
+  { number: "03", title: "Enjoy the moment", text: "Show up ready. Your plans will be easy to find when you need them." },
+];
+
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      setLoggedIn(true);
-    }
+    setLoggedIn(Boolean(localStorage.getItem("token")));
   }, []);
 
+  const eventsHref = loggedIn ? "/events" : "/login";
+
   return (
-    <main className="min-h-screen bg-[#F4EFE7]">
-
-      {/* Hero Section */}
-      <section className="max-w-6xl mx-auto px-6 pt-12 pb-12">
-
-        <div className="bg-white border border-[#DDD5C8] rounded-2xl shadow-sm overflow-hidden">
-
-          <div className="p-8 md:p-12">
-
-            <p className="text-sm font-semibold uppercase tracking-wide text-[#C65D3B]">
-              Welcome to Evently
-            </p>
-
-            <h1 className="mt-3 text-4xl md:text-5xl font-bold text-[#26332D] max-w-3xl leading-tight">
-              Discover events. Book your seats. Enjoy the experience.
+    <main className="min-h-screen bg-[#F4EFE7] text-[#26332D]">
+      <section className="mx-auto max-w-6xl px-6 pb-14 pt-10 md:pt-14">
+        <div className="grid overflow-hidden rounded-3xl border border-[#DDD5C8] bg-[#FFFDF9] shadow-sm lg:grid-cols-[1.15fr_.85fr]">
+          <div className="flex flex-col items-start justify-center p-8 md:p-12 lg:p-14">
+            <span className="rounded-full bg-[#F3E2DA] px-3 py-1.5 text-xs font-bold uppercase tracking-[.16em] text-[#A94A2E]">
+              Make room for something memorable
+            </span>
+            <h1 className="mt-6 max-w-2xl text-4xl font-bold leading-[1.08] tracking-tight md:text-6xl">
+              Good events make great stories.
             </h1>
-
-            <p className="mt-5 text-lg text-[#68736C] max-w-2xl leading-relaxed">
-              Explore upcoming technology events, workshops, and
-              conferences. Check availability and book your seats
-              easily from one place.
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#68736C]">
+              Find talks, workshops, and live experiences worth making time for. Your next favorite might be just around the corner.
             </p>
-
             <div className="mt-8 flex flex-wrap gap-3">
-
-              <Link
-                href={loggedIn ? "/events" : "/login"}
-                className="bg-[#C65D3B] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#A94A2E] transition"
-              >
-                Browse Events
+              <Link href={eventsHref} className="rounded-lg bg-[#C65D3B] px-6 py-3 font-semibold text-white transition hover:bg-[#A94A2E]">
+                Explore upcoming events <span aria-hidden="true">→</span>
               </Link>
-
               {!loggedIn && (
-                <Link
-                  href="/register"
-                  className="bg-white border border-[#DDD5C8] text-[#26332D] px-6 py-3 rounded-lg font-semibold hover:bg-[#F8F5EF] transition"
-                >
-                  Create an Account
+                <Link href="/register" className="rounded-lg border border-[#DDD5C8] bg-white px-6 py-3 font-semibold text-[#26332D] transition hover:bg-[#F8F5EF]">
+                  Create an account
                 </Link>
               )}
-
             </div>
-
           </div>
 
-          {/* Small Information Bar */}
-          <div className="border-t border-[#EEE7DD] bg-[#F8F5EF] px-8 md:px-12 py-5">
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-
-              <div>
-                <p className="text-sm font-semibold text-[#26332D]">
-                  Explore
-                </p>
-
-                <p className="mt-1 text-sm text-[#68736C]">
-                  Find upcoming events
-                </p>
-              </div>
-
-              <div>
-                <p className="text-sm font-semibold text-[#26332D]">
-                  Book
-                </p>
-
-                <p className="mt-1 text-sm text-[#68736C]">
-                  Reserve your seats
-                </p>
-              </div>
-
-              <div>
-                <p className="text-sm font-semibold text-[#26332D]">
-                  Manage
-                </p>
-
-                <p className="mt-1 text-sm text-[#68736C]">
-                  Keep track of your bookings
-                </p>
-              </div>
-
+          <div className="relative flex min-h-[300px] flex-col justify-end overflow-hidden bg-[#2F3E36] p-8 text-white md:min-h-[390px] md:p-10">
+            <div className="absolute -right-10 -top-20 h-72 w-72 rounded-full border border-white/15" />
+            <div className="absolute right-12 top-8 h-48 w-48 rounded-full border border-white/15" />
+            <div className="absolute right-28 top-20 h-24 w-24 rounded-full bg-[#C65D3B]/80 blur-2xl" />
+            <div className="relative">
+              <p className="text-xs font-bold uppercase tracking-[.18em] text-[#D9C7B4]">This season · Evently</p>
+              <p className="mt-3 max-w-sm text-3xl font-bold leading-tight md:text-4xl">Ideas are better together.</p>
+              <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/75">A place to discover what’s happening and make a plan to be there.</p>
             </div>
-
           </div>
-
         </div>
 
+        <div className="mt-5 grid gap-4 md:grid-cols-3">
+          {steps.map((step) => (
+            <article key={step.number} className="rounded-2xl border border-[#DDD5C8] bg-white p-6 shadow-sm">
+              <p className="text-xs font-bold tracking-[.14em] text-[#C65D3B]">{step.number} <span className="text-[#B8AFA1]">/</span> EVENTLY</p>
+              <h2 className="mt-3 text-lg font-bold">{step.title}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-[#68736C]">{step.text}</p>
+            </article>
+          ))}
+        </div>
       </section>
-
-      {/* Features Section */}
-      <section className="max-w-6xl mx-auto px-6 pb-14">
-
-        <div className="mb-7">
-
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#C65D3B]">
-            Simple and convenient
-          </p>
-
-          <h2 className="mt-2 text-3xl font-bold text-[#26332D]">
-            Everything you need
-          </h2>
-
-          <p className="mt-2 text-[#68736C]">
-            Manage your event experience with a few simple steps.
-          </p>
-
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-          {/* Feature 1 */}
-          <div className="bg-white border border-[#DDD5C8] rounded-xl p-6 shadow-sm">
-
-            <div className="w-11 h-11 rounded-lg bg-[#F3E2DA] flex items-center justify-center">
-              <span className="text-[#C65D3B] font-bold text-lg">
-                E
-              </span>
-            </div>
-
-            <h3 className="mt-5 text-xl font-bold text-[#26332D]">
-              Explore Events
-            </h3>
-
-            <p className="mt-3 text-[#68736C] leading-relaxed">
-              Browse upcoming workshops, conferences, and technology
-              events with their dates, locations, available seats,
-              and ticket prices.
-            </p>
-
-          </div>
-
-          <div className="bg-white border border-[#DDD5C8] rounded-xl p-6 shadow-sm">
-
-            <div className="w-11 h-11 rounded-lg bg-[#E5E9E5] flex items-center justify-center">
-              <span className="text-[#4F7058] font-bold text-lg">
-                B
-              </span>
-            </div>
-
-            <h3 className="mt-5 text-xl font-bold text-[#26332D]">
-              Book Your Seats
-            </h3>
-
-            <p className="mt-3 text-[#68736C] leading-relaxed">
-              Select the number of seats you need and book an event
-              easily using your account.
-            </p>
-
-          </div>
-
-          {/* Feature 3 */}
-          <div className="bg-white border border-[#DDD5C8] rounded-xl p-6 shadow-sm">
-
-            <div className="w-11 h-11 rounded-lg bg-[#E8E1D7] flex items-center justify-center">
-              <span className="text-[#765B27] font-bold text-lg">
-                M
-              </span>
-            </div>
-
-            <h3 className="mt-5 text-xl font-bold text-[#26332D]">
-              Manage Bookings
-            </h3>
-
-            <p className="mt-3 text-[#68736C] leading-relaxed">
-              View your bookings, check booking details, and cancel
-              confirmed bookings when your plans change.
-            </p>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      {/* Bottom Section */}
-      <section className="max-w-6xl mx-auto px-6 pb-16">
-
-  <div className="bg-[#2F3E36] rounded-2xl p-8 md:p-10">
-
-    <p
-      className="text-sm font-semibold uppercase tracking-wide"
-      style={{ color: "#D9C7B4" }}
-    >
-      Start Exploring
-    </p>
-
-    <h2
-      className="mt-2 text-3xl font-bold"
-      style={{ color: "#FFFFFF" }}
-    >
-      Ready to find your next event?
-    </h2>
-
-    <p
-      className="mt-3 max-w-2xl"
-      style={{ color: "#E4DED4" }}
-    >
-      Explore the available events and find something that interests you.
-    </p>
-
-    <Link
-      href={loggedIn ? "/events" : "/login"}
-      className="inline-block mt-6 bg-[#C65D3B] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#A94A2E] transition"
-    >
-      View Events
-    </Link>
-
-  </div>
-
-</section>
-
     </main>
   );
 }
